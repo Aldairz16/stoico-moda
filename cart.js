@@ -134,7 +134,7 @@ function cartInjectUI() {
   el.innerHTML = `
     <div id="cart-overlay" class="hidden fixed inset-0 bg-black/40 z-40" onclick="cartClose()"></div>
     <div id="cart-sidebar" data-open="0"
-      style="position:fixed;right:0;top:0;height:100%;width:100%;max-width:340px;background:#fff;border-left:1px solid #000;z-index:50;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .3s ease">
+      style="position:fixed;right:0;top:0;height:100%;width:100%;max-width:min(340px, 100vw);background:#fff;border-left:1px solid #000;z-index:50;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .3s ease">
       <!-- Header -->
       <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid #000">
         <div style="display:flex;align-items:center;gap:8px">

@@ -113,7 +113,7 @@
     </aside>
 
     <!-- Product Grid (rendered from localStorage) -->
-    <div id="product-grid" class="w-full md:w-3/4 lg:w-4/5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter-md"></div>
+    <div id="product-grid" class="w-full md:w-3/4 lg:w-4/5 grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-gutter-md"></div>
   </section>
 </main>
 
@@ -143,16 +143,16 @@
       const card = document.createElement('div');
       card.className = 'group flex flex-col';
       card.innerHTML = `
-        <a href="producto.html?id=${key}" class="block mb-3">
+        <a href="producto.html?id=${key}" class="block mb-2">
           <div class="relative w-full aspect-[4/5] bg-surface-container-low overflow-hidden">
             <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"/>
           </div>
-          <div class="mt-base">
-            <h2 class="font-body-md text-body-md font-bold text-primary">${p.name}</h2>
-            <span class="font-body-md text-body-md text-secondary mt-1 block">${p.price}</span>
+          <div class="mt-1 md:mt-base px-0.5">
+            <h2 class="text-xs md:text-body-md font-bold text-primary leading-tight">${p.name.replace('CAMISETA OVERSIZED ','').replace(/"/g,'')}</h2>
+            <span class="text-xs md:text-body-md text-secondary mt-0.5 block">${p.price}</span>
           </div>
         </a>
-        <a href="producto.html?id=${key}" class="mt-auto border border-primary text-primary font-label-caps text-label-caps py-2 text-center hover:bg-primary hover:text-on-primary transition-colors">VER PRODUCTO</a>`;
+        <a href="producto.html?id=${key}" class="mt-auto border border-primary text-primary font-label-caps text-[10px] md:text-label-caps py-1.5 md:py-2 text-center hover:bg-primary hover:text-on-primary transition-colors">VER</a>`;
       grid.appendChild(card);
     });
   }

@@ -77,9 +77,9 @@
     </div>
     <div class="relative z-10 flex flex-col items-center text-center px-margin-mobile max-w-3xl mx-auto">
       <p class="font-label-caps text-label-caps text-white/70 mb-6 tracking-widest">COLECCIÓN 02 — SS25</p>
-      <h1 class="font-display-xl text-[64px] md:text-[100px] leading-none tracking-tighter uppercase text-white drop-shadow-md mb-6">STOICO</h1>
-      <h2 class="font-headline-md text-headline-md text-white mb-8 tracking-widest">Permanencia Sobre Tendencias</h2>
-      <p class="font-body-lg text-body-lg text-white/80 mb-10">Ropa minimalista diseñada para el estoico moderno. Calidad sin compromisos.</p>
+      <h1 class="font-display-xl text-[48px] sm:text-[64px] md:text-[100px] leading-none tracking-tighter uppercase text-white drop-shadow-md mb-4 md:mb-6">STOICO</h1>
+      <h2 class="font-headline-md text-base md:text-headline-md text-white mb-4 md:mb-8 tracking-widest">Permanencia Sobre Tendencias</h2>
+      <p class="hidden md:block font-body-lg text-body-lg text-white/80 mb-10">Ropa minimalista diseñada para el estoico moderno. Calidad sin compromisos.</p>
       <a href="catalogo.html" class="bg-white text-primary font-label-caps text-label-caps py-4 px-12 border border-white hover:bg-transparent hover:text-white transition-colors uppercase tracking-widest">
         COMPRAR COLECCIÓN
       </a>
@@ -92,7 +92,7 @@
       <h2 class="font-headline-lg text-headline-lg text-primary tracking-tighter uppercase mb-2">Editorial</h2>
       <p class="font-body-md text-body-md text-secondary">Nuevas siluetas. Formas estrictas para la vida moderna.</p>
     </div>
-    <div id="editorial-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter-md px-margin-mobile md:px-margin-desktop max-w-max-width mx-auto pb-8"></div>
+    <div id="editorial-grid" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-gutter-md px-margin-mobile md:px-margin-desktop max-w-max-width mx-auto pb-8"></div>
     <div class="flex justify-center mt-4">
       <a href="catalogo.html" class="font-label-caps text-label-caps text-primary border border-primary px-8 py-3 hover:bg-primary hover:text-on-primary transition-colors">VER CATÁLOGO COMPLETO</a>
     </div>
@@ -138,12 +138,12 @@
       const card = document.createElement('div');
       card.className = 'group cursor-pointer border border-primary bg-surface-container-low flex flex-col';
       card.innerHTML = `
-        <div class="h-[60vh] w-full relative overflow-hidden">
+        <a href="producto.html?id=${key}" class="block h-[42vw] sm:h-[45vh] md:h-[55vh] w-full relative overflow-hidden">
           <img src="${p.img}" alt="${p.name}" class="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"/>
-        </div>
-        <div class="p-gutter-md bg-surface border-t border-primary flex justify-between items-center">
-          <span class="font-headline-md text-primary tracking-tighter uppercase text-base">${p.name.replace('CAMISETA OVERSIZED ','').replace(/"/g,'')}</span>
-          <a href="producto.html?id=${key}" class="font-label-caps text-label-caps text-on-primary bg-primary px-4 py-2 hover:bg-surface hover:text-primary border border-primary transition-colors whitespace-nowrap text-xs">VER PRODUCTO</a>
+        </a>
+        <div class="p-2 md:p-gutter-md bg-surface border-t border-primary flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+          <span class="font-label-caps text-[10px] md:text-xs text-primary tracking-tighter uppercase leading-tight">${p.name.replace('CAMISETA OVERSIZED ','').replace(/"/g,'')}</span>
+          <a href="producto.html?id=${key}" class="font-label-caps text-[9px] md:text-label-caps text-on-primary bg-primary px-2 md:px-4 py-1.5 md:py-2 hover:bg-surface hover:text-primary border border-primary transition-colors whitespace-nowrap text-center">VER</a>
         </div>`;
       grid.appendChild(card);
     });
