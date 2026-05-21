@@ -322,10 +322,42 @@
   import { fsGetAllData } from './firebase-app.js';
   try {
     const fbData = await fsGetAllData();
-    if (fbData && Object.keys(fbData.products||{}).length > 0) {
-      stoicoSaveData({ ...stoicoGetData(), ...fbData });
-      // Reload page with fresh data from cache
-      location.reload();
+    if (!fbData || !Object.keys(fbData.products||{}).length) return;
+    const merged = { ...stoicoGetData(), ...fbData };
+    stoicoSaveData(merged);
+
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id') || Object.keys(merged.products)[0];
+    const p  = merged.products[id];
+    if (!p) return;
+
+    // Update text fields
+    document.getElementById('product-name').textContent  = p.name;
+    document.getElementById('product-price').textContent = p.price;
+    document.getElementById('product-desc').textContent  = p.desc;
+    document.getElementById('page-title').textContent    = 'STOICO — ' + p.name.replace('CAMISETA OVERSIZED ','').replace(/"/g,'');
+    document.getElementById('breadcrumb-name').textContent = p.name.replace('CAMISETA OVERSIZED ','').replace(/"/g,'');
+
+    // Update main image
+    const imgs = [p.img, p.img2, p.img3].filter(Boolean);
+    if (imgs[0]) document.getElementById('main-img').src = imgs[0];
+
+    // Update footer
+    if (merged.footer) document.getElementById('footer-copy').textContent = merged.footer;
+
+    // Update size guide table
+    const sgBody = document.getElementById('size-guide-body');
+    if (sgBody && merged.sizeGuide?.length) {
+      sgBody.innerHTML = '';
+      merged.sizeGuide.forEach((row, i) => {
+        const tr = document.createElement('tr');
+        tr.className = i % 2 === 0 ? 'bg-surface-container-low' : 'bg-surface';
+        tr.innerHTML = `<td class="border border-primary px-3 py-2 font-semibold text-primary">${row.talla}</td>
+          <td class="border border-primary px-3 py-2 text-center text-secondary">${row.largo} cm</td>
+          <td class="border border-primary px-3 py-2 text-center text-secondary">${row.ancho} cm</td>
+          <td class="border border-primary px-3 py-2 text-center text-secondary">${row.manga} cm</td>`;
+        sgBody.appendChild(tr);
+      });
     }
   } catch(_) {}
 </script>
