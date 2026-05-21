@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script src="shared.js"></script>
+<script src="cart.js"></script>
 <script id="tailwind-config">
   tailwind.config = {
     darkMode: "class",
@@ -49,9 +50,13 @@
       <a href="#editorial" class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors">EDITORIAL</a>
       <a href="#manifesto" class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors">NOSOTROS</a>
     </nav>
-    <button id="menu-btn" class="md:hidden text-primary">
-      <span class="material-symbols-outlined">menu</span>
-    </button>
+    <div class="flex items-center gap-3">
+      <button onclick="cartOpen()" class="relative text-primary flex items-center">
+        <span class="material-symbols-outlined">shopping_bag</span>
+        <span class="cart-badge hidden absolute -top-1.5 -right-1.5 bg-primary text-on-primary text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center leading-none"></span>
+      </button>
+      <button id="menu-btn" class="md:hidden text-primary"><span class="material-symbols-outlined">menu</span></button>
+    </div>
   </div>
   <div id="mobile-menu" class="hidden md:hidden border-t border-primary bg-surface">
     <nav class="flex flex-col px-margin-mobile py-gutter-md space-y-gutter-md">

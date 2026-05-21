@@ -182,6 +182,18 @@
         <div><p class="text-xs text-gray-400 mb-1 uppercase tracking-wider font-semibold">Vista previa</p><div id="prev-single" class="preview-msg"></div></div>
       </div>
       <div class="bg-white border border-gray-200 p-6 flex flex-col gap-4">
+        <h3 class="font-bold text-sm uppercase tracking-wider">Mensaje de Carrito</h3>
+        <p class="text-xs text-gray-500">Se usa cuando el cliente pide desde el carrito con varios productos.</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="var-chip" onclick="insertVar('tpl-cart','{items}')">&#123;items&#125;</span>
+          <span class="var-chip" onclick="insertVar('tpl-cart','{total}')">&#123;total&#125;</span>
+          <span class="var-chip" onclick="insertVar('tpl-cart','{cantidad_total}')">&#123;cantidad_total&#125;</span>
+        </div>
+        <div class="field"><label>Plantilla</label><textarea id="tpl-cart" rows="5" oninput="previewCart()"></textarea></div>
+        <div><p class="text-xs text-gray-400 mb-1 uppercase tracking-wider font-semibold">Vista previa</p><div id="prev-cart" class="preview-msg"></div></div>
+      </div>
+
+      <div class="bg-white border border-gray-200 p-6 flex flex-col gap-4">
         <h3 class="font-bold text-sm uppercase tracking-wider">Pedido al Por Mayor</h3>
         <div class="flex flex-wrap gap-2">
           <span class="var-chip" onclick="insertVar('tpl-bulk','{producto}')">&#123;producto&#125;</span>
@@ -291,6 +303,7 @@ function init() {
   document.getElementById('cfg-footer').value   = DATA.footer   || '© 2026 STOICO. PERMANENCIA SOBRE TENDENCIAS.';
   document.getElementById('tpl-single').value   = DATA.singleTemplate;
   document.getElementById('tpl-bulk').value     = DATA.bulkTemplate;
+  document.getElementById('tpl-cart').value     = DATA.cartTemplate || STOICO_DEFAULTS.cartTemplate;
   initHero();
   renderSizeGuide();
   previewSingle();
@@ -451,8 +464,18 @@ function previewBulk() {
   document.getElementById('prev-bulk').textContent =
     stoicoBuildBulkMsg(tpl, { name: 'CAMISETA OVERSIZED "GALAXY"', price: 'S/ 35.00' });
 }
+function previewCart() {
+  const tpl   = document.getElementById('tpl-cart').value;
+  const items = [
+    { name: 'CAMISETA OVERSIZED "GALAXY"',        price: 'S/ 35.00', size: 'M', qty: 2 },
+    { name: 'CAMISETA OVERSIZED "SAMURAI TIGER"', price: 'S/ 35.00', size: 'S', qty: 1 },
+  ];
+  const lines = items.map(i => `• ${i.name.replace('CAMISETA OVERSIZED ','').replace(/"/g,'')} — Talla ${i.size} × ${i.qty} — S/ ${(35*i.qty).toFixed(2)}`).join('\n');
+  document.getElementById('prev-cart').textContent = tpl.replace(/{items}/g, lines).replace(/{total}/g,'105.00').replace(/{cantidad_total}/g,'3');
+}
 window.previewSingle = previewSingle;
 window.previewBulk   = previewBulk;
+window.previewCart   = previewCart;
 
 window.insertVar = (id, v) => {
   const el = document.getElementById(id);
@@ -472,6 +495,7 @@ window.saveAll = async () => {
   DATA.footer         = document.getElementById('cfg-footer').value.trim();
   DATA.singleTemplate = document.getElementById('tpl-single').value;
   DATA.bulkTemplate   = document.getElementById('tpl-bulk').value;
+  DATA.cartTemplate   = document.getElementById('tpl-cart').value;
 
   PRODUCT_KEYS.forEach(key => {
     DATA.products[key].name  = document.getElementById(`name-${key}`)?.value.trim()  || DATA.products[key].name;

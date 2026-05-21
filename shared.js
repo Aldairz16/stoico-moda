@@ -5,6 +5,7 @@ const STOICO_DEFAULTS = {
     { talla: 'S', largo: '63', ancho: '58', manga: '21' },
     { talla: 'M', largo: '66', ancho: '61', manga: '22' },
   ],
+  cartTemplate: 'Hola STOICO 👋, quiero hacer el siguiente pedido:\n\n🛒 MI PEDIDO:\n{items}\n\nTotal: S/ {total}\n\nQuedo atento para coordinar el pago y envío 🙏',
   singleTemplate: 'Hola STOICO 👋, quiero pedir:\n\nProducto: {producto}\nTalla: {talla}\nPrecio: {precio}\n\nQuedo atento.',
   bulkTemplate: 'Hola STOICO 👋\n\nQuiero hacer un pedido al por mayor:\n\nProducto: {producto}\nTallas: {tallas}\nCantidad total: {cantidad} unidades\nPrecio unitario: {precio_unit}\n\nPor favor indicarme disponibilidad y tiempo de entrega.\n\nGracias.',
   products: {

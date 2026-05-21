@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script src="shared.js"></script>
+<script src="cart.js"></script>
 <script id="tailwind-config">
   tailwind.config = {
     darkMode:"class",
@@ -47,7 +48,13 @@
       <a href="index.html#editorial" class="text-secondary hover:text-primary transition-colors">EDITORIAL</a>
       <a href="index.html#manifesto" class="text-secondary hover:text-primary transition-colors">NOSOTROS</a>
     </nav>
-    <button id="menu-btn" class="md:hidden text-primary"><span class="material-symbols-outlined">menu</span></button>
+    <div class="flex items-center gap-3">
+      <button onclick="cartOpen()" class="relative text-primary flex items-center">
+        <span class="material-symbols-outlined">shopping_bag</span>
+        <span class="cart-badge hidden absolute -top-1.5 -right-1.5 bg-primary text-on-primary text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center leading-none"></span>
+      </button>
+      <button id="menu-btn" class="md:hidden text-primary"><span class="material-symbols-outlined">menu</span></button>
+    </div>
   </div>
   <div id="mobile-menu" class="hidden md:hidden border-t border-primary bg-surface">
     <nav class="flex flex-col px-margin-mobile py-gutter-md space-y-gutter-md">
@@ -128,53 +135,69 @@
         </div>
       </div>
 
-      <!-- CTA individual -->
+      <!-- CTA: Agregar al carrito -->
+      <button id="btn-add-cart"
+        class="w-full bg-primary text-on-primary border border-primary font-label-caps text-label-caps py-5 px-6 uppercase tracking-widest hover:bg-surface hover:text-primary transition-colors mb-3 flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined">shopping_bag</span> AGREGAR AL CARRITO
+      </button>
+
+      <!-- CTA: Pedido directo -->
       <a id="btn-single" href="#" target="_blank"
-         class="w-full bg-primary text-on-primary border border-primary font-label-caps text-label-caps py-5 px-6 uppercase tracking-widest hover:bg-surface hover:text-primary transition-colors mb-3 flex items-center justify-center gap-2">
-        <span class="material-symbols-outlined">chat</span> PEDIR POR WHATSAPP
+         class="w-full bg-surface text-primary border border-primary font-label-caps text-label-caps py-4 px-6 uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-colors mb-3 flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined">chat</span> PEDIR DIRECTO POR WHATSAPP
       </a>
 
       <!-- CTA pedido grande -->
       <a id="btn-bulk" href="#" target="_blank"
-         class="w-full bg-surface text-primary border border-primary font-label-caps text-label-caps py-4 px-6 uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-colors mb-10 flex items-center justify-center gap-2">
+         class="w-full bg-surface text-primary border border-primary font-label-caps text-label-caps py-3 px-6 uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-colors mb-10 flex items-center justify-center gap-2">
         <span class="material-symbols-outlined">inventory_2</span> PEDIDO AL POR MAYOR
       </a>
 
-      <!-- Accordions -->
-      <div class="border-t border-primary flex flex-col">
-        <details class="group border-b border-primary" open>
-          <summary class="flex justify-between items-center font-label-caps text-label-caps text-primary py-4 cursor-pointer list-none">
+      <!-- Acordeones (custom, sin <details>) -->
+      <div class="border-t border-primary">
+
+        <div class="accordion border-b border-primary">
+          <button class="acc-trigger w-full flex justify-between items-center font-label-caps text-label-caps text-primary py-4 bg-transparent border-none cursor-pointer text-left">
             DETALLES Y FABRICACIÓN
-            <span class="material-symbols-outlined transition duration-300 group-open:-rotate-180">expand_more</span>
-          </summary>
-          <div class="pb-6 font-body-md text-body-md text-secondary">
-            <ul class="space-y-2 list-disc list-inside">
-              <li>100% Algodón hilo 20/1</li>
-              <li>Corte Boxy Fit</li>
-              <li>Tallas disponibles: S y M</li>
-              <li>Cuello redondo acanalado</li>
-              <li>Serigrafía de alta definición</li>
-            </ul>
+            <span class="material-symbols-outlined acc-icon transition-transform duration-300">expand_more</span>
+          </button>
+          <div class="acc-body overflow-hidden transition-all duration-300" style="max-height:0">
+            <div class="pb-6 font-body-md text-body-md text-secondary">
+              <ul class="space-y-2 list-disc list-inside">
+                <li>100% Algodón hilo 20/1</li>
+                <li>Corte Boxy Fit</li>
+                <li>Tallas disponibles: S y M</li>
+                <li>Cuello redondo acanalado</li>
+                <li>Serigrafía de alta definición</li>
+              </ul>
+            </div>
           </div>
-        </details>
-        <details class="group border-b border-primary">
-          <summary class="flex justify-between items-center font-label-caps text-label-caps text-primary py-4 cursor-pointer list-none">
+        </div>
+
+        <div class="accordion border-b border-primary">
+          <button class="acc-trigger w-full flex justify-between items-center font-label-caps text-label-caps text-primary py-4 bg-transparent border-none cursor-pointer text-left">
             ENVÍOS Y DEVOLUCIONES
-            <span class="material-symbols-outlined transition duration-300 group-open:-rotate-180">expand_more</span>
-          </summary>
-          <div class="pb-6 font-body-md text-body-md text-secondary">
-            <p>Envío exprés en todos los pedidos nacionales. Devoluciones aceptadas dentro de los 14 días, con prenda sin usar y etiquetas intactas.</p>
+            <span class="material-symbols-outlined acc-icon transition-transform duration-300">expand_more</span>
+          </button>
+          <div class="acc-body overflow-hidden transition-all duration-300" style="max-height:0">
+            <div class="pb-6 font-body-md text-body-md text-secondary">
+              <p>Envío exprés en todos los pedidos nacionales. Devoluciones aceptadas dentro de los 14 días, con prenda sin usar y etiquetas intactas.</p>
+            </div>
           </div>
-        </details>
-        <details class="group border-b border-primary">
-          <summary class="flex justify-between items-center font-label-caps text-label-caps text-primary py-4 cursor-pointer list-none">
+        </div>
+
+        <div class="accordion border-b border-primary">
+          <button class="acc-trigger w-full flex justify-between items-center font-label-caps text-label-caps text-primary py-4 bg-transparent border-none cursor-pointer text-left">
             GUÍA DE CUIDADOS
-            <span class="material-symbols-outlined transition duration-300 group-open:-rotate-180">expand_more</span>
-          </summary>
-          <div class="pb-6 font-body-md text-body-md text-secondary">
-            <p>Lavar a máquina en frío. No usar secadora. Planchar al revés a temperatura media. Lavar con colores similares.</p>
+            <span class="material-symbols-outlined acc-icon transition-transform duration-300">expand_more</span>
+          </button>
+          <div class="acc-body overflow-hidden transition-all duration-300" style="max-height:0">
+            <div class="pb-6 font-body-md text-body-md text-secondary">
+              <p>Lavar a máquina en frío. No usar secadora. Planchar al revés a temperatura media. Lavar con colores similares.</p>
+            </div>
           </div>
-        </details>
+        </div>
+
       </div>
     </div>
   </div>
@@ -207,9 +230,28 @@
 
 <script>
   document.getElementById('menu-btn').addEventListener('click', () => document.getElementById('mobile-menu').classList.toggle('hidden'));
-  document.querySelectorAll('details').forEach(d => {
-    d.addEventListener('click', () => document.querySelectorAll('details').forEach(o => { if (o !== d) o.removeAttribute('open'); }));
+
+  // Acordeones custom
+  document.querySelectorAll('.accordion').forEach(acc => {
+    const trigger = acc.querySelector('.acc-trigger');
+    const body    = acc.querySelector('.acc-body');
+    const icon    = acc.querySelector('.acc-icon');
+    trigger.addEventListener('click', () => {
+      const isOpen = body.style.maxHeight !== '0px' && body.style.maxHeight !== '';
+      // Cerrar todos
+      document.querySelectorAll('.accordion .acc-body').forEach(b => b.style.maxHeight = '0');
+      document.querySelectorAll('.accordion .acc-icon').forEach(i => i.style.transform = '');
+      // Abrir el clickeado si estaba cerrado
+      if (!isOpen) {
+        body.style.maxHeight = body.scrollHeight + 'px';
+        icon.style.transform = 'rotate(180deg)';
+      }
+    });
   });
+  // Abrir el primero por defecto
+  const firstBody = document.querySelector('.accordion .acc-body');
+  const firstIcon = document.querySelector('.accordion .acc-icon');
+  if (firstBody) { firstBody.style.maxHeight = firstBody.scrollHeight + 'px'; firstIcon.style.transform = 'rotate(180deg)'; }
 
   const DATA = stoicoGetData();
   document.getElementById('footer-copy').textContent = DATA.footer || '© 2026 STOICO. PERMANENCIA SOBRE TENDENCIAS.';
@@ -298,6 +340,12 @@
   }
 
   updateWaLinks();
+
+  // Botón agregar al carrito
+  document.getElementById('btn-add-cart').addEventListener('click', () => {
+    const size = getSelectedSize();
+    cartAdd({ id, name: p.name, price: p.price, img: images[0] || '' }, size);
+  });
 
   // Related products
   const relatedEl = document.getElementById('related');
