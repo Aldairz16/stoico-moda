@@ -266,10 +266,14 @@ async function loadFromFirebase() {
   try {
     showToast('Cargando datos de Firebase…', 2000);
     const fbData = await fsGetAllData();
-    if (fbData && Object.keys(fbData.products || {}).length > 0) {
+    const hasProducts = fbData && Object.keys(fbData.products || {}).length > 0;
+    const hasConfig   = fbData && (fbData.waNumber !== undefined || fbData.singleTemplate);
+    if (hasProducts || hasConfig) {
+      // Merge Firebase data over defaults (never over good local data if Firebase is empty)
       DATA = { ...stoicoGetData(), ...fbData };
-      stoicoSaveData(DATA); // update local cache
+      if (hasProducts) stoicoSaveData(DATA);
     }
+    // If Firebase is empty, keep local data as-is
   } catch (e) {
     showToast('Sin conexión, usando datos locales.', 3000);
   }
