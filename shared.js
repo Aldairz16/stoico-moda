@@ -1,5 +1,5 @@
 const STOICO_DEFAULTS = {
-  waNumber: '',
+  waNumber: '51928930052',
   heroImg: '',
   sizeGuide: [
     { talla: 'S', largo: '63', ancho: '58', manga: '21' },
