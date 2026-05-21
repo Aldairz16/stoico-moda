@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>STOICO — Admin</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="shared.js"></script>
+<style>
+  body { font-family: 'Hanken Grotesk', sans-serif; }
+  h1,h2,h3 { font-family: 'Montserrat', sans-serif; }
+  .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; vertical-align:middle; }
+  .field { display:flex; flex-direction:column; gap:4px; }
+  .field label { font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:#6b7280; }
+  .field input,.field textarea { border:1px solid #d1d5db; padding:8px 12px; font-size:14px; font-family:'Hanken Grotesk',sans-serif; outline:none; background:#fff; transition:border-color .2s; }
+  .field input:focus,.field textarea:focus { border-color:#000; }
+  textarea { resize:vertical; min-height:80px; }
+  .btn-primary { background:#000; color:#fff; font-size:12px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; padding:12px 24px; cursor:pointer; border:1px solid #000; transition:background .2s; }
+  .btn-primary:hover { background:#222; }
+  .btn-primary:disabled { background:#9ca3af; border-color:#9ca3af; cursor:not-allowed; }
+  .btn-secondary { background:#fff; color:#000; font-size:12px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; padding:10px 20px; cursor:pointer; border:1px solid #000; transition:background .2s; }
+  .btn-secondary:hover { background:#f3f3f4; }
+  .btn-danger { background:#fff; color:#dc2626; font-size:12px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; padding:10px 20px; cursor:pointer; border:1px solid #dc2626; transition:background .2s; }
+  .btn-danger:hover { background:#fef2f2; }
+  .toast { position:fixed; bottom:24px; right:24px; background:#000; color:#fff; padding:12px 20px; font-size:13px; font-weight:500; z-index:9999; transform:translateY(80px); opacity:0; transition:all .3s; pointer-events:none; }
+  .toast.show { transform:translateY(0); opacity:1; }
+  .size-badge { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:600; letter-spacing:.08em; background:#f3f3f4; border:1px solid #e5e7eb; padding:3px 8px; color:#6b7280; }
+  .var-chip { display:inline-block; background:#f3f3f4; border:1px solid #d1d5db; padding:2px 8px; font-size:11px; font-family:monospace; cursor:pointer; color:#374151; transition:background .15s; }
+  .var-chip:hover { background:#000; color:#fff; border-color:#000; }
+  .img-wrap { position:relative; width:100%; aspect-ratio:4/5; background:#f3f3f4; overflow:hidden; }
+  .img-wrap img { width:100%; height:100%; object-fit:cover; object-position:top; }
+  .img-overlay { position:absolute; inset:0; background:rgba(0,0,0,0); display:flex; align-items:center; justify-content:center; transition:background .2s; cursor:pointer; }
+  .img-overlay:hover { background:rgba(0,0,0,.45); }
+  .img-overlay span { color:#fff; opacity:0; transition:opacity .2s; font-size:12px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; display:flex; align-items:center; gap:6px; }
+  .img-overlay:hover span { opacity:1; }
+  .section-header { font-size:11px; font-weight:600; letter-spacing:.15em; text-transform:uppercase; color:#6b7280; border-bottom:1px solid #e5e7eb; padding-bottom:8px; margin-bottom:20px; }
+  .preview-msg { background:#f0fdf4; border:1px solid #bbf7d0; padding:10px 14px; font-size:13px; color:#166534; white-space:pre-wrap; line-height:1.6; }
+  .saving-overlay { position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:9998; display:none; align-items:center; justify-content:center; }
+  .saving-overlay.show { display:flex; }
+  .spinner { width:40px; height:40px; border:3px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:spin .8s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen" class="hidden fixed inset-0 bg-white z-50 flex items-center justify-center">
+  <div class="text-center max-w-sm w-full px-8">
+    <h1 class="text-3xl font-bold tracking-tighter mb-1" style="font-family:Montserrat,sans-serif">STOICO</h1>
+    <p class="text-xs font-semibold tracking-widest uppercase text-gray-400 mb-10">Panel de Administración</p>
+    <button id="btn-google-login"
+      class="w-full flex items-center justify-center gap-3 border border-gray-300 bg-white hover:bg-gray-50 transition px-6 py-3 text-sm font-semibold text-gray-700 shadow-sm">
+      <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18Z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332Z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58Z"/></svg>
+      Entrar con Google
+    </button>
+    <p class="text-xs text-gray-400 mt-4">Solo los administradores autorizados pueden acceder.</p>
+  </div>
+</div>
+
+<!-- SAVING OVERLAY -->
+<div id="saving-overlay" class="saving-overlay">
+  <div class="text-center text-white">
+    <div class="spinner mx-auto mb-3"></div>
+    <p class="text-sm font-semibold tracking-wider">GUARDANDO EN FIREBASE...</p>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="bg-white border-b border-gray-200 sticky top-0 z-40">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+    <div class="flex items-center gap-4">
+      <span class="font-bold text-xl tracking-tight" style="font-family:Montserrat,sans-serif">STOICO</span>
+      <span class="text-xs font-semibold tracking-widest uppercase text-gray-400 border border-gray-200 px-2 py-0.5">Admin</span>
+      <span id="db-badge" class="hidden text-xs font-semibold tracking-wider px-2 py-0.5 bg-green-50 border border-green-200 text-green-700">● Firebase</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <span id="user-email" class="text-xs text-gray-400 hidden"></span>
+      <a href="index.html" target="_blank" class="btn-secondary flex items-center gap-1 text-xs">
+        <span class="material-symbols-outlined text-sm">open_in_new</span> Ver sitio
+      </a>
+      <button id="btn-signout" class="hidden btn-secondary text-xs flex items-center gap-1">
+        <span class="material-symbols-outlined text-sm">logout</span> Salir
+      </button>
+      <button id="btn-save" onclick="saveAll()" class="btn-primary flex items-center gap-2" disabled>
+        <span class="material-symbols-outlined text-sm">cloud_upload</span> Guardar en Firebase
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-6 py-10 space-y-12">
+
+  <!-- CONFIG -->
+  <section>
+    <p class="section-header">Configuración General</p>
+    <div class="bg-white border border-gray-200 p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="field">
+        <label>Número WhatsApp <span class="text-gray-400 normal-case font-normal">(dígitos, ej: 51987654321)</span></label>
+        <input id="cfg-wa" type="text" placeholder="51987654321" inputmode="numeric"/>
+      </div>
+      <div class="field">
+        <label>Texto del footer</label>
+        <input id="cfg-footer" type="text" placeholder="© 2026 STOICO. PERMANENCIA SOBRE TENDENCIAS."/>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTADA -->
+  <section>
+    <p class="section-header">Foto de Portada (Hero)</p>
+    <div class="bg-white border border-gray-200 p-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-semibold uppercase tracking-wider text-gray-600">Imagen actual</span>
+          <span class="size-badge">1280 × 640 px · landscape</span>
+        </div>
+        <div class="relative w-full aspect-video bg-gray-100 overflow-hidden">
+          <img id="hero-preview" src="" class="w-full h-full object-cover object-top" style="display:none"/>
+          <div id="hero-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-gray-300 gap-2">
+            <span class="material-symbols-outlined text-5xl">image</span>
+            <span class="text-xs font-semibold uppercase tracking-wider">Sin imagen personalizada</span>
+          </div>
+        </div>
+        <input type="file" id="file-hero" accept="image/*" class="hidden"/>
+        <div class="flex gap-2 mt-3">
+          <button onclick="document.getElementById('file-hero').click()" class="btn-primary flex-1 flex items-center justify-center gap-1">
+            <span class="material-symbols-outlined text-sm">upload</span> Subir portada
+          </button>
+          <button onclick="clearHero()" class="btn-danger px-4 flex items-center gap-1" title="Eliminar">
+            <span class="material-symbols-outlined text-sm">delete</span>
+          </button>
+        </div>
+      </div>
+      <ul class="text-xs text-gray-500 space-y-2 leading-relaxed mt-2">
+        <li>📐 <strong>Tamaño ideal:</strong> 1920 × 900 px (landscape)</li>
+        <li>📁 <strong>Formato:</strong> JPG o WebP</li>
+        <li>⚖️ <strong>Peso:</strong> se comprime automáticamente</li>
+        <li>🎨 Imágenes oscuras funcionan mejor con el texto blanco encima</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- GUÍA DE TALLAS -->
+  <section>
+    <p class="section-header">Guía de Tallas</p>
+    <div class="bg-white border border-gray-200 p-6">
+      <p class="text-xs text-gray-500 mb-4">Medidas en centímetros. Se muestran en la página de cada producto.</p>
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse text-sm">
+          <thead>
+            <tr class="bg-black text-white">
+              <th class="border border-gray-800 px-4 py-2 text-left text-xs font-semibold tracking-widest">TALLA</th>
+              <th class="border border-gray-800 px-4 py-2 text-xs font-semibold tracking-widest">LARGO</th>
+              <th class="border border-gray-800 px-4 py-2 text-xs font-semibold tracking-widest">ANCHO</th>
+              <th class="border border-gray-800 px-4 py-2 text-xs font-semibold tracking-widest">MANGA</th>
+              <th class="border border-gray-800 px-2 py-2"></th>
+            </tr>
+          </thead>
+          <tbody id="size-tbody"></tbody>
+        </table>
+      </div>
+      <button onclick="addSizeRow()" class="btn-secondary mt-4 flex items-center gap-1 text-xs">
+        <span class="material-symbols-outlined text-sm">add</span> Agregar talla
+      </button>
+    </div>
+  </section>
+
+  <!-- PLANTILLAS WA -->
+  <section>
+    <p class="section-header">Plantillas de Mensaje WhatsApp</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-white border border-gray-200 p-6 flex flex-col gap-4">
+        <h3 class="font-bold text-sm uppercase tracking-wider">Pedido Individual</h3>
+        <div class="flex flex-wrap gap-2">
+          <span class="var-chip" onclick="insertVar('tpl-single','{producto}')">&#123;producto&#125;</span>
+          <span class="var-chip" onclick="insertVar('tpl-single','{talla}')">&#123;talla&#125;</span>
+          <span class="var-chip" onclick="insertVar('tpl-single','{precio}')">&#123;precio&#125;</span>
+        </div>
+        <div class="field"><label>Plantilla</label><textarea id="tpl-single" rows="5" oninput="previewSingle()"></textarea></div>
+        <div><p class="text-xs text-gray-400 mb-1 uppercase tracking-wider font-semibold">Vista previa</p><div id="prev-single" class="preview-msg"></div></div>
+      </div>
+      <div class="bg-white border border-gray-200 p-6 flex flex-col gap-4">
+        <h3 class="font-bold text-sm uppercase tracking-wider">Pedido al Por Mayor</h3>
+        <div class="flex flex-wrap gap-2">
+          <span class="var-chip" onclick="insertVar('tpl-bulk','{producto}')">&#123;producto&#125;</span>
+          <span class="var-chip" onclick="insertVar('tpl-bulk','{cantidad}')">&#123;cantidad&#125;</span>
+          <span class="var-chip" onclick="insertVar('tpl-bulk','{tallas}')">&#123;tallas&#125;</span>
+          <span class="var-chip" onclick="insertVar('tpl-bulk','{precio_unit}')">&#123;precio_unit&#125;</span>
+        </div>
+        <div class="field"><label>Plantilla</label><textarea id="tpl-bulk" rows="5" oninput="previewBulk()"></textarea></div>
+        <div><p class="text-xs text-gray-400 mb-1 uppercase tracking-wider font-semibold">Vista previa</p><div id="prev-bulk" class="preview-msg"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTOS -->
+  <section>
+    <p class="section-header">Productos</p>
+    <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
+  </section>
+
+  <!-- ACCIONES -->
+  <section class="flex justify-between items-center pb-10">
+    <button onclick="resetDefaults()" class="btn-danger flex items-center gap-1">
+      <span class="material-symbols-outlined text-sm">restart_alt</span> Restablecer valores
+    </button>
+    <button onclick="saveAll()" id="btn-save-bottom" class="btn-primary flex items-center gap-2 px-8 py-4 text-base" disabled>
+      <span class="material-symbols-outlined">cloud_upload</span> Guardar en Firebase
+    </button>
+  </section>
+</main>
+
+<div id="toast" class="toast"></div>
+
+<script type="module">
+import {
+  db, auth, googleProvider,
+  signInWithPopup, onAuthStateChanged, signOut,
+  fsGetAllData, fsSaveConfig, fsSaveProduct,
+  compressImage, compressHero
+} from './firebase-app.js';
+
+// ── AUTH ─────────────────────────────────────────────────────────────────────
+const loginScreen = document.getElementById('login-screen');
+const btnSave     = document.getElementById('btn-save');
+const btnSaveBot  = document.getElementById('btn-save-bottom');
+const btnSignout  = document.getElementById('btn-signout');
+const userEmail   = document.getElementById('user-email');
+const dbBadge     = document.getElementById('db-badge');
+
+document.getElementById('btn-google-login').addEventListener('click', () => {
+  signInWithPopup(auth, googleProvider).catch(e => showToast('Error al iniciar sesión: ' + e.message, 4000));
+});
+
+btnSignout.addEventListener('click', () => signOut(auth));
+
+onAuthStateChanged(auth, async user => {
+  if (user) {
+    loginScreen.classList.add('hidden');
+    btnSave.disabled = false;
+    btnSaveBot.disabled = false;
+    btnSignout.classList.remove('hidden');
+    userEmail.textContent = user.email;
+    userEmail.classList.remove('hidden');
+    dbBadge.classList.remove('hidden');
+    await loadFromFirebase();
+  } else {
+    loginScreen.classList.remove('hidden');
+    btnSave.disabled = true;
+    btnSaveBot.disabled = true;
+    btnSignout.classList.add('hidden');
+    userEmail.classList.add('hidden');
+    dbBadge.classList.add('hidden');
+    // Load from localStorage while not authenticated
+    loadFromLocal();
+  }
+});
+
+// ── DATA ─────────────────────────────────────────────────────────────────────
+let DATA = stoicoGetData(); // from shared.js (localStorage)
+const PRODUCT_KEYS = Object.keys(STOICO_DEFAULTS.products);
+
+async function loadFromFirebase() {
+  try {
+    showToast('Cargando datos de Firebase…', 2000);
+    const fbData = await fsGetAllData();
+    if (fbData && Object.keys(fbData.products || {}).length > 0) {
+      DATA = { ...stoicoGetData(), ...fbData };
+      stoicoSaveData(DATA); // update local cache
+    }
+  } catch (e) {
+    showToast('Sin conexión, usando datos locales.', 3000);
+  }
+  init();
+}
+
+function loadFromLocal() {
+  DATA = stoicoGetData();
+  init();
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+function init() {
+  document.getElementById('cfg-wa').value       = DATA.waNumber || '';
+  document.getElementById('cfg-footer').value   = DATA.footer   || '© 2026 STOICO. PERMANENCIA SOBRE TENDENCIAS.';
+  document.getElementById('tpl-single').value   = DATA.singleTemplate;
+  document.getElementById('tpl-bulk').value     = DATA.bulkTemplate;
+  initHero();
+  renderSizeGuide();
+  previewSingle();
+  previewBulk();
+  renderProducts();
+}
+
+// ── HERO ─────────────────────────────────────────────────────────────────────
+function initHero() {
+  const img = DATA.heroImg || '';
+  const el  = document.getElementById('hero-preview');
+  const ph  = document.getElementById('hero-placeholder');
+  if (img) { el.src = img; el.style.display = ''; ph.style.display = 'none'; }
+  else      { el.style.display = 'none'; ph.style.display = ''; }
+}
+
+document.getElementById('file-hero').addEventListener('change', async e => {
+  const file = e.target.files[0]; if (!file) return;
+  showToast('Comprimiendo imagen de portada…', 1500);
+  DATA.heroImg = await compressHero(file);
+  initHero();
+  showToast('Portada lista. Recuerda guardar.');
+});
+
+window.clearHero = () => {
+  if (!confirm('¿Eliminar la portada personalizada?')) return;
+  DATA.heroImg = ''; initHero(); showToast('Portada eliminada. Recuerda guardar.');
+};
+
+// ── SIZE GUIDE ────────────────────────────────────────────────────────────────
+function renderSizeGuide() {
+  const tbody = document.getElementById('size-tbody');
+  tbody.innerHTML = '';
+  (DATA.sizeGuide || []).forEach((row, i) => {
+    const tr = document.createElement('tr');
+    tr.className = i % 2 === 0 ? 'bg-gray-50' : 'bg-white';
+    tr.innerHTML = `
+      <td class="border border-gray-200 px-2 py-1">
+        <input type="text" value="${row.talla}" maxlength="4" onchange="updateSizeRow(${i},'talla',this.value)"
+          class="w-full border border-gray-200 px-2 py-1 text-sm font-bold text-center focus:border-black outline-none bg-transparent"/>
+      </td>
+      <td class="border border-gray-200 px-2 py-1">
+        <input type="number" value="${row.largo}" min="0" step="0.5" onchange="updateSizeRow(${i},'largo',this.value)"
+          class="w-full border border-gray-200 px-2 py-1 text-sm text-center focus:border-black outline-none bg-transparent"/>
+      </td>
+      <td class="border border-gray-200 px-2 py-1">
+        <input type="number" value="${row.ancho}" min="0" step="0.5" onchange="updateSizeRow(${i},'ancho',this.value)"
+          class="w-full border border-gray-200 px-2 py-1 text-sm text-center focus:border-black outline-none bg-transparent"/>
+      </td>
+      <td class="border border-gray-200 px-2 py-1">
+        <input type="number" value="${row.manga}" min="0" step="0.5" onchange="updateSizeRow(${i},'manga',this.value)"
+          class="w-full border border-gray-200 px-2 py-1 text-sm text-center focus:border-black outline-none bg-transparent"/>
+      </td>
+      <td class="border border-gray-200 px-2 py-1 text-center">
+        <button onclick="deleteSizeRow(${i})" class="text-red-500 hover:text-red-700" title="Eliminar">
+          <span class="material-symbols-outlined text-base">delete</span>
+        </button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+window.updateSizeRow = (i, f, v) => { DATA.sizeGuide[i][f] = v; };
+window.addSizeRow    = () => { DATA.sizeGuide.push({talla:'L',largo:'0',ancho:'0',manga:'0'}); renderSizeGuide(); };
+window.deleteSizeRow = i => { DATA.sizeGuide.splice(i,1); renderSizeGuide(); };
+
+// ── PRODUCTS ─────────────────────────────────────────────────────────────────
+function renderProducts() {
+  const grid = document.getElementById('products-grid');
+  grid.innerHTML = '';
+  PRODUCT_KEYS.forEach(key => {
+    const p = DATA.products[key] || {};
+    const card = document.createElement('div');
+    card.className = 'bg-white border border-gray-200 p-5 flex flex-col gap-4';
+    card.innerHTML = `
+      <h3 class="font-bold text-xs uppercase tracking-widest text-gray-500">${key}</h3>
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider text-gray-600">Imagen Principal</span>
+          <span class="size-badge">700 × 875 px</span>
+        </div>
+        <div class="img-wrap" onclick="triggerUpload('${key}','img')">
+          <img id="img-img-${key}" src="${p.img||''}" style="${p.img?'':'display:none'}" />
+          <div class="img-overlay"><span><span class="material-symbols-outlined text-base">upload</span> Cambiar</span></div>
+        </div>
+        <input type="file" id="file-img-${key}" accept="image/*" class="hidden"/>
+        <button class="btn-secondary w-full mt-2 text-xs" onclick="triggerUpload('${key}','img')">
+          <span class="material-symbols-outlined text-sm" style="vertical-align:middle">upload</span> Subir imagen
+        </button>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <div class="img-wrap" style="cursor:pointer" onclick="triggerUpload('${key}','img2')">
+            <img id="img-img2-${key}" src="${p.img2||''}" style="${p.img2?'':'display:none'}"/>
+            <div class="img-overlay"><span><span class="material-symbols-outlined text-sm">add_photo_alternate</span></span></div>
+          </div>
+          <input type="file" id="file-img2-${key}" accept="image/*" class="hidden"/>
+          <p class="text-xs text-gray-400 text-center mt-1">Foto 2</p>
+        </div>
+        <div>
+          <div class="img-wrap" style="cursor:pointer" onclick="triggerUpload('${key}','img3')">
+            <img id="img-img3-${key}" src="${p.img3||''}" style="${p.img3?'':'display:none'}"/>
+            <div class="img-overlay"><span><span class="material-symbols-outlined text-sm">add_photo_alternate</span></span></div>
+          </div>
+          <input type="file" id="file-img3-${key}" accept="image/*" class="hidden"/>
+          <p class="text-xs text-gray-400 text-center mt-1">Foto 3</p>
+        </div>
+      </div>
+      <div class="field"><label>Nombre</label><input id="name-${key}" type="text" value="${esc(p.name||'')}"/></div>
+      <div class="field"><label>Precio</label><input id="price-${key}" type="text" value="${esc(p.price||'')}" placeholder="S/ 35.00"/></div>
+      <div class="field"><label>Descripción</label><textarea id="desc-${key}" rows="3">${esc(p.desc||'')}</textarea></div>
+      <div class="flex gap-2">
+        <a href="producto.html?id=${key}" target="_blank" class="btn-secondary flex-1 text-center text-xs flex items-center justify-center gap-1">
+          <span class="material-symbols-outlined text-sm">open_in_new</span> Ver
+        </a>
+        <button onclick="clearImgs('${key}')" class="btn-danger flex-1 text-xs flex items-center justify-center gap-1">
+          <span class="material-symbols-outlined text-sm">hide_image</span> Limpiar imgs
+        </button>
+      </div>`;
+    grid.appendChild(card);
+    // Bind file inputs
+    ['img','img2','img3'].forEach(slot => {
+      document.getElementById(`file-${slot}-${key}`).addEventListener('change', e => handleImg(e, key, slot));
+    });
+  });
+}
+
+window.triggerUpload = (key, slot) => document.getElementById(`file-${slot}-${key}`).click();
+
+async function handleImg(e, key, slot) {
+  const file = e.target.files[0]; if (!file) return;
+  showToast('Comprimiendo imagen…', 1200);
+  const b64 = await compressImage(file);
+  DATA.products[key][slot] = b64;
+  const el = document.getElementById(`img-${slot}-${key}`);
+  el.src = b64; el.style.display = '';
+  showToast('Imagen lista. Recuerda guardar.');
+}
+
+window.clearImgs = key => {
+  if (!confirm(`¿Limpiar imágenes de ${key}?`)) return;
+  ['img','img2','img3'].forEach(slot => {
+    DATA.products[key][slot] = '';
+    const el = document.getElementById(`img-${slot}-${key}`);
+    if (el) { el.src=''; el.style.display='none'; }
+  });
+  showToast('Imágenes limpiadas. Recuerda guardar.');
+};
+
+// ── PREVIEWS ─────────────────────────────────────────────────────────────────
+function previewSingle() {
+  const tpl = document.getElementById('tpl-single').value;
+  document.getElementById('prev-single').textContent =
+    stoicoBuildSingleMsg(tpl, { name: 'CAMISETA OVERSIZED "GALAXY"', price: 'S/ 35.00' }, 'M');
+}
+function previewBulk() {
+  const tpl = document.getElementById('tpl-bulk').value;
+  document.getElementById('prev-bulk').textContent =
+    stoicoBuildBulkMsg(tpl, { name: 'CAMISETA OVERSIZED "GALAXY"', price: 'S/ 35.00' });
+}
+window.previewSingle = previewSingle;
+window.previewBulk   = previewBulk;
+
+window.insertVar = (id, v) => {
+  const el = document.getElementById(id);
+  const s = el.selectionStart, e2 = el.selectionEnd;
+  el.value = el.value.slice(0,s) + v + el.value.slice(e2);
+  el.selectionStart = el.selectionEnd = s + v.length;
+  el.focus();
+  if (id === 'tpl-single') previewSingle(); else previewBulk();
+};
+
+// ── SAVE ─────────────────────────────────────────────────────────────────────
+window.saveAll = async () => {
+  if (!auth.currentUser) { showToast('Debes iniciar sesión primero.', 3000); return; }
+
+  // Collect form values
+  DATA.waNumber       = document.getElementById('cfg-wa').value.trim().replace(/\D/g,'');
+  DATA.footer         = document.getElementById('cfg-footer').value.trim();
+  DATA.singleTemplate = document.getElementById('tpl-single').value;
+  DATA.bulkTemplate   = document.getElementById('tpl-bulk').value;
+
+  PRODUCT_KEYS.forEach(key => {
+    DATA.products[key].name  = document.getElementById(`name-${key}`)?.value.trim()  || DATA.products[key].name;
+    DATA.products[key].price = document.getElementById(`price-${key}`)?.value.trim() || DATA.products[key].price;
+    DATA.products[key].desc  = document.getElementById(`desc-${key}`)?.value.trim()  || DATA.products[key].desc;
+  });
+
+  document.getElementById('saving-overlay').classList.add('show');
+  try {
+    const { products, ...config } = DATA;
+    await fsSaveConfig(config);
+    await Promise.all(PRODUCT_KEYS.map(k => fsSaveProduct(k, products[k])));
+    stoicoSaveData(DATA); // update localStorage cache
+    showToast('✓ Guardado en Firebase correctamente');
+  } catch (e) {
+    showToast('Error al guardar: ' + e.message, 5000);
+    console.error(e);
+  } finally {
+    document.getElementById('saving-overlay').classList.remove('show');
+  }
+};
+
+// ── RESET ─────────────────────────────────────────────────────────────────────
+window.resetDefaults = () => {
+  if (!confirm('¿Restablecer todos los valores por defecto?')) return;
+  localStorage.removeItem('stoico_data');
+  DATA = stoicoGetData();
+  init();
+  showToast('Valores restablecidos (no guardados en Firebase aún)');
+};
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+function showToast(msg, duration = 2500) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), duration);
+}
+window.showToast = showToast;
+
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+</script>
+</body>
+</html>

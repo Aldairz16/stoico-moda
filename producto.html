@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title id="page-title">STOICO — Producto</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="shared.js"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode:"class",
+    theme:{extend:{
+      colors:{
+        "surface-container-low":"#f3f3f4","surface-variant":"#e2e2e2",
+        "primary":"#000000","surface":"#f9f9f9","background":"#f9f9f9",
+        "on-primary":"#ffffff","secondary":"#5e5e5e","surface-dim":"#dadada","on-surface":"#1a1c1c",
+      },
+      spacing:{"gutter-sm":"16px","margin-desktop":"64px","base":"8px","max-width":"1440px","gutter-md":"24px","margin-mobile":"20px"},
+      fontFamily:{"body-md":["Hanken Grotesk"],"label-caps":["Hanken Grotesk"],"body-lg":["Hanken Grotesk"],"headline-lg":["Montserrat"],"display-xl":["Montserrat"],"headline-md":["Montserrat"],"headline-lg-mobile":["Montserrat"]},
+      fontSize:{
+        "body-md":["16px",{lineHeight:"24px",fontWeight:"400"}],
+        "label-caps":["12px",{lineHeight:"16px",letterSpacing:"0.15em",fontWeight:"600"}],
+        "body-lg":["18px",{lineHeight:"28px",fontWeight:"400"}],
+        "headline-lg":["48px",{lineHeight:"56px",letterSpacing:"-0.02em",fontWeight:"700"}],
+        "display-xl":["80px",{lineHeight:"90px",letterSpacing:"-0.04em",fontWeight:"700"}],
+        "headline-md":["24px",{lineHeight:"32px",letterSpacing:"0.05em",fontWeight:"600"}],
+        "headline-lg-mobile":["32px",{lineHeight:"38px",letterSpacing:"-0.02em",fontWeight:"700"}],
+      }
+    }}
+  }
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .thumb-active { border: 2px solid #000 !important; }
+</style>
+</head>
+<body class="bg-surface antialiased min-h-screen flex flex-col">
+
+<!-- Header -->
+<header class="bg-surface top-0 border-b border-primary z-50 sticky">
+  <div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-base max-w-max-width mx-auto">
+    <a href="index.html" class="font-headline-md text-headline-md tracking-tighter font-bold text-primary hover:opacity-70 transition-opacity">STOICO</a>
+    <nav class="hidden md:flex items-center space-x-gutter-md font-label-caps text-label-caps">
+      <a href="catalogo.html" class="text-secondary hover:text-primary transition-colors">TIENDA</a>
+      <a href="index.html#editorial" class="text-secondary hover:text-primary transition-colors">EDITORIAL</a>
+      <a href="index.html#manifesto" class="text-secondary hover:text-primary transition-colors">NOSOTROS</a>
+    </nav>
+    <button id="menu-btn" class="md:hidden text-primary"><span class="material-symbols-outlined">menu</span></button>
+  </div>
+  <div id="mobile-menu" class="hidden md:hidden border-t border-primary bg-surface">
+    <nav class="flex flex-col px-margin-mobile py-gutter-md space-y-gutter-md">
+      <a href="catalogo.html" class="font-label-caps text-label-caps text-primary">TIENDA</a>
+      <a href="index.html#editorial" class="font-label-caps text-label-caps text-secondary">EDITORIAL</a>
+      <a href="index.html#manifesto" class="font-label-caps text-label-caps text-secondary">NOSOTROS</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Breadcrumb -->
+<div class="max-w-max-width mx-auto w-full px-margin-mobile md:px-margin-desktop pt-gutter-md">
+  <nav class="flex items-center gap-2 font-label-caps text-label-caps text-secondary">
+    <a href="index.html" class="hover:text-primary transition-colors">INICIO</a>
+    <span>/</span>
+    <a href="catalogo.html" class="hover:text-primary transition-colors">CATÁLOGO</a>
+    <span>/</span>
+    <span id="breadcrumb-name" class="text-primary"></span>
+  </nav>
+</div>
+
+<main class="flex-grow w-full max-w-max-width mx-auto px-margin-mobile md:px-margin-desktop py-margin-mobile md:py-margin-desktop">
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter-sm md:gap-margin-desktop items-start">
+
+    <!-- Images -->
+    <div class="md:col-span-7 w-full">
+      <div class="w-full aspect-[4/5] bg-surface-container-low overflow-hidden">
+        <img id="main-img" src="" alt="Producto" class="w-full h-full object-cover object-top transition-opacity duration-300"/>
+      </div>
+      <div id="thumbs" class="mt-gutter-sm grid grid-cols-4 gap-2"></div>
+    </div>
+
+    <!-- Info -->
+    <div class="md:col-span-5 flex flex-col justify-start pt-4 md:pt-0 md:sticky md:top-28">
+
+      <div class="mb-5 flex items-center gap-2">
+        <span class="font-label-caps text-label-caps text-secondary border border-secondary px-2 py-0.5">STOICO</span>
+        <span class="font-label-caps text-label-caps text-secondary">SS25 — COLECCIÓN 02</span>
+      </div>
+
+      <div class="mb-5">
+        <h1 id="product-name" class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary uppercase mb-2"></h1>
+        <p id="product-price" class="font-body-lg text-body-lg text-primary"></p>
+      </div>
+
+      <div class="mb-8">
+        <p id="product-desc" class="font-body-md text-body-md text-secondary max-w-md leading-relaxed"></p>
+      </div>
+
+      <!-- Size Selector -->
+      <div class="mb-8">
+        <span class="font-label-caps text-label-caps text-primary block mb-3">SELECCIONAR TALLA</span>
+        <div class="grid grid-cols-2 gap-base mb-6" id="size-grid">
+          <label class="cursor-pointer">
+            <input checked class="peer sr-only" name="size" type="radio" value="S"/>
+            <div class="border border-primary py-3 text-center font-label-caps text-label-caps text-primary peer-checked:bg-primary peer-checked:text-on-primary hover:bg-surface-variant transition-colors">S</div>
+          </label>
+          <label class="cursor-pointer">
+            <input class="peer sr-only" name="size" type="radio" value="M"/>
+            <div class="border border-primary py-3 text-center font-label-caps text-label-caps text-primary peer-checked:bg-primary peer-checked:text-on-primary hover:bg-surface-variant transition-colors">M</div>
+          </label>
+        </div>
+
+        <!-- Guía de tallas (dinámica) -->
+        <div>
+          <p class="font-label-caps text-label-caps text-secondary mb-2">GUÍA DE TALLAS</p>
+          <table class="w-full border-collapse text-sm font-body-md">
+            <thead>
+              <tr class="bg-primary text-on-primary">
+                <th class="border border-primary px-3 py-2 text-left font-label-caps text-label-caps tracking-wider">TALLA</th>
+                <th class="border border-primary px-3 py-2 font-label-caps text-label-caps tracking-wider">LARGO</th>
+                <th class="border border-primary px-3 py-2 font-label-caps text-label-caps tracking-wider">ANCHO</th>
+                <th class="border border-primary px-3 py-2 font-label-caps text-label-caps tracking-wider">MANGA</th>
+              </tr>
+            </thead>
+            <tbody id="size-guide-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CTA individual -->
+      <a id="btn-single" href="#" target="_blank"
+         class="w-full bg-primary text-on-primary border border-primary font-label-caps text-label-caps py-5 px-6 uppercase tracking-widest hover:bg-surface hover:text-primary transition-colors mb-3 flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined">chat</span> PEDIR POR WHATSAPP
+      </a>
+
+      <!-- CTA pedido grande -->
+      <a id="btn-bulk" href="#" target="_blank"
+         class="w-full bg-surface text-primary border border-primary font-label-caps text-label-caps py-4 px-6 uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-colors mb-10 flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined">inventory_2</span> PEDIDO AL POR MAYOR
+      </a>
+
+      <!-- Accordions -->
+      <div class="border-t border-primary flex flex-col">
+        <details class="group border-b border-primary" open>
+          <summary class="flex justify-between items-center font-label-caps text-label-caps text-primary py-4 cursor-pointer list-none">
+            DETALLES Y FABRICACIÓN
+            <span class="material-symbols-outlined transition duration-300 group-open:-rotate-180">expand_more</span>
+          </summary>
+          <div class="pb-6 font-body-md text-body-md text-secondary">
+            <ul class="space-y-2 list-disc list-inside">
+              <li>100% Algodón hilo 20/1</li>
+              <li>Corte Boxy Fit</li>
+              <li>Tallas disponibles: S y M</li>
+              <li>Cuello redondo acanalado</li>
+              <li>Serigrafía de alta definición</li>
+            </ul>
+          </div>
+        </details>
+        <details class="group border-b border-primary">
+          <summary class="flex justify-between items-center font-label-caps text-label-caps text-primary py-4 cursor-pointer list-none">
+            ENVÍOS Y DEVOLUCIONES
+            <span class="material-symbols-outlined transition duration-300 group-open:-rotate-180">expand_more</span>
+          </summary>
+          <div class="pb-6 font-body-md text-body-md text-secondary">
+            <p>Envío exprés en todos los pedidos nacionales. Devoluciones aceptadas dentro de los 14 días, con prenda sin usar y etiquetas intactas.</p>
+          </div>
+        </details>
+        <details class="group border-b border-primary">
+          <summary class="flex justify-between items-center font-label-caps text-label-caps text-primary py-4 cursor-pointer list-none">
+            GUÍA DE CUIDADOS
+            <span class="material-symbols-outlined transition duration-300 group-open:-rotate-180">expand_more</span>
+          </summary>
+          <div class="pb-6 font-body-md text-body-md text-secondary">
+            <p>Lavar a máquina en frío. No usar secadora. Planchar al revés a temperatura media. Lavar con colores similares.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related -->
+  <div class="mt-24 pt-12 border-t border-primary">
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="font-headline-md text-headline-md text-primary uppercase">Productos Relacionados</h2>
+      <a href="catalogo.html" class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors border-b border-primary pb-1 hidden md:block">VER TODO</a>
+    </div>
+    <div id="related" class="grid grid-cols-2 md:grid-cols-4 gap-gutter-sm"></div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="bg-surface border-t border-primary mt-auto">
+  <div class="flex flex-col md:flex-row justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-gutter-md max-w-max-width mx-auto gap-gutter-md md:gap-0">
+    <div class="text-center md:text-left">
+      <span class="font-headline-md text-headline-md text-primary block mb-1">STOICO</span>
+      <span id="footer-copy" class="text-secondary font-body-md text-body-md"></span>
+    </div>
+    <nav class="flex flex-wrap justify-center gap-x-gutter-md gap-y-base font-label-caps text-label-caps">
+      <a href="#" class="text-secondary hover:text-primary transition-colors">ENVÍOS</a>
+      <a href="#" class="text-secondary hover:text-primary transition-colors">DEVOLUCIONES</a>
+      <a href="#" class="text-secondary hover:text-primary transition-colors">PRIVACIDAD</a>
+      <a href="#" class="text-secondary hover:text-primary transition-colors">TÉRMINOS</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('menu-btn').addEventListener('click', () => document.getElementById('mobile-menu').classList.toggle('hidden'));
+  document.querySelectorAll('details').forEach(d => {
+    d.addEventListener('click', () => document.querySelectorAll('details').forEach(o => { if (o !== d) o.removeAttribute('open'); }));
+  });
+
+  const DATA = stoicoGetData();
+  document.getElementById('footer-copy').textContent = DATA.footer || '© 2026 STOICO. PERMANENCIA SOBRE TENDENCIAS.';
+
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id') || Object.keys(DATA.products)[0];
+  const p = DATA.products[id] || Object.values(DATA.products)[0];
+
+  // Render size guide table
+  const sizeGuide = DATA.sizeGuide || [];
+  const sgBody = document.getElementById('size-guide-body');
+  sizeGuide.forEach((row, i) => {
+    const tr = document.createElement('tr');
+    tr.className = i % 2 === 0 ? 'bg-surface-container-low' : 'bg-surface';
+    tr.innerHTML = `
+      <td class="border border-primary px-3 py-2 font-semibold text-primary">${row.talla}</td>
+      <td class="border border-primary px-3 py-2 text-center text-secondary">${row.largo} cm</td>
+      <td class="border border-primary px-3 py-2 text-center text-secondary">${row.ancho} cm</td>
+      <td class="border border-primary px-3 py-2 text-center text-secondary">${row.manga} cm</td>`;
+    sgBody.appendChild(tr);
+  });
+
+  // Render size selector dynamically from size guide
+  const sizeGrid = document.getElementById('size-grid');
+  sizeGrid.innerHTML = '';
+  sizeGuide.forEach((row, i) => {
+    const label = document.createElement('label');
+    label.className = 'cursor-pointer';
+    label.innerHTML = `
+      <input ${i === 0 ? 'checked' : ''} class="peer sr-only" name="size" type="radio" value="${row.talla}"/>
+      <div class="border border-primary py-3 text-center font-label-caps text-label-caps text-primary peer-checked:bg-primary peer-checked:text-on-primary hover:bg-surface-variant transition-colors">${row.talla}</div>`;
+    sizeGrid.appendChild(label);
+    // Re-bind change listener
+    label.querySelector('input').addEventListener('change', updateWaLinks);
+  });
+  // Adjust grid cols
+  sizeGrid.style.gridTemplateColumns = `repeat(${Math.min(sizeGuide.length, 4)}, minmax(0, 1fr))`;
+
+  // Fill info
+  document.getElementById('page-title').textContent = 'STOICO — ' + p.name.replace('CAMISETA OVERSIZED ','').replace(/"/g,'');
+  document.getElementById('breadcrumb-name').textContent = p.name.replace('CAMISETA OVERSIZED ','').replace(/"/g,'');
+  document.getElementById('product-name').textContent = p.name;
+  document.getElementById('product-price').textContent = p.price;
+  document.getElementById('product-desc').textContent = p.desc;
+
+  // Images
+  const mainImg = document.getElementById('main-img');
+  const images = [p.img, p.img2, p.img3].filter(Boolean);
+  mainImg.src = images[0] || '';
+
+  const thumbsEl = document.getElementById('thumbs');
+  images.forEach((src, i) => {
+    const div = document.createElement('div');
+    div.className = `aspect-square bg-surface-container-low overflow-hidden cursor-pointer border ${i===0?'border-2 border-primary thumb-active':'border-surface-dim'}`;
+    div.innerHTML = `<img src="${src}" class="w-full h-full object-cover object-top"/>`;
+    div.onclick = () => {
+      mainImg.style.opacity = '0';
+      setTimeout(() => { mainImg.src = src; mainImg.style.opacity = '1'; }, 150);
+      thumbsEl.querySelectorAll('div').forEach(d => d.classList.remove('thumb-active','border-2','border-primary'));
+      div.classList.add('thumb-active','border-2','border-primary');
+    };
+    thumbsEl.appendChild(div);
+  });
+  // Fill remaining slots
+  for (let i = images.length; i < 4; i++) {
+    const div = document.createElement('div');
+    div.className = 'aspect-square bg-surface-container-low border border-surface-dim flex items-center justify-center';
+    div.innerHTML = `<span class="material-symbols-outlined text-gray-300">image</span>`;
+    thumbsEl.appendChild(div);
+  }
+
+  // WhatsApp buttons
+  const waNumber = DATA.waNumber || '';
+  const waBase = waNumber ? `https://wa.me/${waNumber}` : 'https://wa.me/';
+
+  function getSelectedSize() {
+    return document.querySelector('input[name="size"]:checked')?.value || sizeGuide[0]?.talla || 'S';
+  }
+
+  function updateWaLinks() {
+    const size = getSelectedSize();
+    const singleMsg = stoicoBuildSingleMsg(DATA.singleTemplate, p, size);
+    document.getElementById('btn-single').href = waBase + '?text=' + encodeURIComponent(singleMsg);
+    const bulkMsg = stoicoBuildBulkMsg(DATA.bulkTemplate, p);
+    document.getElementById('btn-bulk').href = waBase + '?text=' + encodeURIComponent(bulkMsg);
+  }
+
+  updateWaLinks();
+
+  // Related products
+  const relatedEl = document.getElementById('related');
+  Object.entries(DATA.products)
+    .filter(([k]) => k !== id)
+    .slice(0, 4)
+    .forEach(([k, rp]) => {
+      const a = document.createElement('a');
+      a.href = `producto.html?id=${k}`;
+      a.className = 'group block';
+      const shortName = rp.name.replace('CAMISETA OVERSIZED ','').replace(/"/g,'');
+      a.innerHTML = `
+        <div class="w-full aspect-[4/5] bg-surface-container-low overflow-hidden mb-3">
+          <img src="${rp.img}" alt="${shortName}" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"/>
+        </div>
+        <h3 class="font-label-caps text-label-caps text-primary mb-1 text-xs leading-snug">${shortName}</h3>
+        <p class="font-body-md text-body-md text-secondary text-sm">${rp.price}</p>`;
+      relatedEl.appendChild(a);
+    });
+</script>
+<script type="module">
+  import { fsGetAllData } from './firebase-app.js';
+  try {
+    const fbData = await fsGetAllData();
+    if (fbData && Object.keys(fbData.products||{}).length > 0) {
+      stoicoSaveData({ ...stoicoGetData(), ...fbData });
+      // Reload page with fresh data from cache
+      location.reload();
+    }
+  } catch(_) {}
+</script>
+</body>
+</html>

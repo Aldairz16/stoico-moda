@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>STOICO - Permanencia Sobre Tendencias</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="shared.js"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "surface-container-low": "#f3f3f4", "surface-variant": "#e2e2e2",
+          "secondary-fixed-dim": "#c7c6c6", "on-surface": "#1a1c1c",
+          "surface-container": "#eeeeee", "primary": "#000000",
+          "surface": "#f9f9f9", "background": "#f9f9f9",
+          "on-primary": "#ffffff", "secondary": "#5e5e5e", "surface-dim": "#dadada",
+        },
+        spacing: { "gutter-sm":"16px","margin-desktop":"64px","base":"8px","max-width":"1440px","gutter-md":"24px","margin-mobile":"20px" },
+        fontFamily: { "body-md":["Hanken Grotesk"],"label-caps":["Hanken Grotesk"],"body-lg":["Hanken Grotesk"],"headline-lg":["Montserrat"],"display-xl":["Montserrat"],"headline-md":["Montserrat"] },
+        fontSize: {
+          "body-md":["16px",{lineHeight:"24px",fontWeight:"400"}],
+          "label-caps":["12px",{lineHeight:"16px",letterSpacing:"0.15em",fontWeight:"600"}],
+          "body-lg":["18px",{lineHeight:"28px",fontWeight:"400"}],
+          "headline-lg":["48px",{lineHeight:"56px",letterSpacing:"-0.02em",fontWeight:"700"}],
+          "display-xl":["80px",{lineHeight:"90px",letterSpacing:"-0.04em",fontWeight:"700"}],
+          "headline-md":["24px",{lineHeight:"32px",letterSpacing:"0.05em",fontWeight:"600"}],
+        }
+      }
+    }
+  }
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+</style>
+</head>
+<body class="bg-surface text-on-surface antialiased font-body-md selection:bg-primary selection:text-on-primary">
+
+<!-- Header -->
+<header class="bg-surface sticky top-0 border-b border-primary z-50">
+  <div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-base max-w-max-width mx-auto">
+    <a href="index.html" class="font-headline-md text-headline-md tracking-tighter font-bold text-primary hover:opacity-70 transition-opacity">STOICO</a>
+    <nav class="hidden md:flex items-center space-x-gutter-md">
+      <a href="catalogo.html" class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors">TIENDA</a>
+      <a href="#editorial" class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors">EDITORIAL</a>
+      <a href="#manifesto" class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors">NOSOTROS</a>
+    </nav>
+    <button id="menu-btn" class="md:hidden text-primary">
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+  </div>
+  <div id="mobile-menu" class="hidden md:hidden border-t border-primary bg-surface">
+    <nav class="flex flex-col px-margin-mobile py-gutter-md space-y-gutter-md">
+      <a href="catalogo.html" class="font-label-caps text-label-caps text-primary">TIENDA</a>
+      <a href="#editorial" class="font-label-caps text-label-caps text-secondary">EDITORIAL</a>
+      <a href="#manifesto" class="font-label-caps text-label-caps text-secondary">NOSOTROS</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- Hero -->
+  <section class="relative w-full h-[90vh] flex items-center justify-center overflow-hidden border-b border-primary">
+    <div class="absolute inset-0">
+      <img id="hero-img" src="https://lh3.googleusercontent.com/aida/ADBb0ugA-Nr4C9gnJ0VxiyUuxW94DyVnmnZw5ju5vZS93idQDXkekixSJ5LZqscS5UT29qwAWsPK6oGn-KM-nU9tZQT27dZ5tcE4kjKlmEmPz6fpIC8bhX6hq0jcWAjELiw_qE4QlEhuSHnOKImx_mLS_i-IEI6aevWE8Svz9hDgStVXpw5zoAb-2UjjPzbp9v2poIa6TFo-LAdhHI8Njt3At-xUPUysx7lPnkuXPzl2e0_sirhmQ9bS9e4upd9A"
+           alt="STOICO Hero" class="w-full h-full object-cover object-top"/>
+      <div class="absolute inset-0 bg-black/50"></div>
+    </div>
+    <div class="relative z-10 flex flex-col items-center text-center px-margin-mobile max-w-3xl mx-auto">
+      <p class="font-label-caps text-label-caps text-white/70 mb-6 tracking-widest">COLECCIÓN 02 — SS25</p>
+      <h1 class="font-display-xl text-[64px] md:text-[100px] leading-none tracking-tighter uppercase text-white drop-shadow-md mb-6">STOICO</h1>
+      <h2 class="font-headline-md text-headline-md text-white mb-8 tracking-widest">Permanencia Sobre Tendencias</h2>
+      <p class="font-body-lg text-body-lg text-white/80 mb-10">Ropa minimalista diseñada para el estoico moderno. Calidad sin compromisos.</p>
+      <a href="catalogo.html" class="bg-white text-primary font-label-caps text-label-caps py-4 px-12 border border-white hover:bg-transparent hover:text-white transition-colors uppercase tracking-widest">
+        COMPRAR COLECCIÓN
+      </a>
+    </div>
+  </section>
+
+  <!-- Editorial Grid -->
+  <section id="editorial" class="w-full py-margin-desktop bg-surface">
+    <div class="px-margin-mobile md:px-margin-desktop max-w-max-width mx-auto mb-gutter-md text-center">
+      <h2 class="font-headline-lg text-headline-lg text-primary tracking-tighter uppercase mb-2">Editorial</h2>
+      <p class="font-body-md text-body-md text-secondary">Nuevas siluetas. Formas estrictas para la vida moderna.</p>
+    </div>
+    <div id="editorial-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter-md px-margin-mobile md:px-margin-desktop max-w-max-width mx-auto pb-8"></div>
+    <div class="flex justify-center mt-4">
+      <a href="catalogo.html" class="font-label-caps text-label-caps text-primary border border-primary px-8 py-3 hover:bg-primary hover:text-on-primary transition-colors">VER CATÁLOGO COMPLETO</a>
+    </div>
+  </section>
+
+  <!-- Manifesto -->
+  <section id="manifesto" class="w-full bg-primary text-on-primary py-margin-desktop px-margin-mobile md:px-margin-desktop border-t border-primary">
+    <div class="max-w-3xl mx-auto text-center flex flex-col items-center">
+      <span class="font-label-caps text-label-caps text-secondary-fixed-dim mb-gutter-md border border-secondary-fixed-dim px-3 py-1">MANIFIESTO</span>
+      <p class="font-headline-md text-headline-md text-on-primary md:font-headline-lg md:text-headline-lg leading-snug tracking-tighter mb-margin-desktop">
+        CREEMOS EN LA ARQUITECTURA DE LA ROPA. PRENDAS QUE SE ERIGEN COMO MONUMENTOS A LA RESISTENCIA, RECHAZANDO LA NATURALEZA EFÍMERA DE LAS TENDENCIAS.
+      </p>
+      <a href="catalogo.html" class="bg-surface text-primary font-label-caps text-label-caps py-3 px-8 hover:bg-primary hover:text-on-primary border border-surface transition-colors uppercase">VER COLECCIÓN</a>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="bg-surface border-t border-primary">
+  <div class="flex flex-col md:flex-row justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-gutter-md max-w-max-width mx-auto gap-gutter-md md:gap-0">
+    <div class="font-headline-md text-headline-md text-primary tracking-tighter">STOICO</div>
+    <nav class="flex flex-wrap justify-center gap-gutter-md">
+      <a href="#" class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors">ENVÍOS</a>
+      <a href="#" class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors">DEVOLUCIONES</a>
+      <a href="#" class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors">PRIVACIDAD</a>
+      <a href="#" class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors">TÉRMINOS</a>
+    </nav>
+    <div id="footer-copy" class="font-body-md text-body-md text-secondary text-sm"></div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('menu-btn').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+
+  function renderPage(DATA) {
+    document.getElementById('footer-copy').textContent = DATA.footer || '© 2026 STOICO. PERMANENCIA SOBRE TENDENCIAS.';
+    if (DATA.heroImg) document.getElementById('hero-img').src = DATA.heroImg;
+    const grid = document.getElementById('editorial-grid');
+    grid.innerHTML = '';
+    Object.entries(DATA.products).forEach(([key, p]) => {
+      const card = document.createElement('div');
+      card.className = 'group cursor-pointer border border-primary bg-surface-container-low flex flex-col';
+      card.innerHTML = `
+        <div class="h-[60vh] w-full relative overflow-hidden">
+          <img src="${p.img}" alt="${p.name}" class="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"/>
+        </div>
+        <div class="p-gutter-md bg-surface border-t border-primary flex justify-between items-center">
+          <span class="font-headline-md text-primary tracking-tighter uppercase text-base">${p.name.replace('CAMISETA OVERSIZED ','').replace(/"/g,'')}</span>
+          <a href="producto.html?id=${key}" class="font-label-caps text-label-caps text-on-primary bg-primary px-4 py-2 hover:bg-surface hover:text-primary border border-primary transition-colors whitespace-nowrap text-xs">VER PRODUCTO</a>
+        </div>`;
+      grid.appendChild(card);
+    });
+  }
+
+  // Render immediately from localStorage cache
+  renderPage(stoicoGetData());
+</script>
+<!-- Firebase sync (background, no bloquea el render) -->
+<script type="module">
+  import { fsGetAllData } from './firebase-app.js';
+  try {
+    const fbData = await fsGetAllData();
+    if (fbData && Object.keys(fbData.products||{}).length > 0) {
+      const merged = { ...stoicoGetData(), ...fbData };
+      stoicoSaveData(merged);
+      // Re-render with fresh data
+      document.getElementById('footer-copy').textContent = merged.footer || '© 2026 STOICO. PERMANENCIA SOBRE TENDENCIAS.';
+      if (merged.heroImg) document.getElementById('hero-img').src = merged.heroImg;
+      const grid = document.getElementById('editorial-grid');
+      grid.innerHTML = '';
+      Object.entries(merged.products).forEach(([key, p]) => {
+        const card = document.createElement('div');
+        card.className = 'group cursor-pointer border border-primary bg-surface-container-low flex flex-col';
+        card.innerHTML = `
+          <div class="h-[60vh] w-full relative overflow-hidden">
+            <img src="${p.img}" alt="${p.name}" class="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"/>
+          </div>
+          <div class="p-gutter-md bg-surface border-t border-primary flex justify-between items-center">
+            <span class="font-headline-md text-primary tracking-tighter uppercase text-base">${p.name.replace('CAMISETA OVERSIZED ','').replace(/"/g,'')}</span>
+            <a href="producto.html?id=${key}" class="font-label-caps text-label-caps text-on-primary bg-primary px-4 py-2 hover:bg-surface hover:text-primary border border-primary transition-colors whitespace-nowrap text-xs">VER PRODUCTO</a>
+          </div>`;
+        grid.appendChild(card);
+      });
+    }
+  } catch(_) {}
+</script>
+</body>
+</html>
