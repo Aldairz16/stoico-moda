@@ -130,30 +130,43 @@
     document.getElementById('mobile-menu').classList.toggle('hidden');
   });
 
-  function renderPage(DATA) {
+  function buildCard(key, p) {
+    const card = document.createElement('div');
+    card.className = 'group cursor-pointer border border-primary bg-surface-container-low flex flex-col';
+    card.innerHTML = `
+      <a href="producto.html?id=${key}" class="block h-[42vw] sm:h-[45vh] md:h-[55vh] w-full relative overflow-hidden">
+        <img src="${p.img||''}" alt="${p.name||''}" class="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"/>
+      </a>
+      <div class="p-2 md:p-gutter-md bg-surface border-t border-primary flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+        <span class="font-label-caps text-[10px] md:text-xs text-primary tracking-tighter uppercase leading-tight">${(p.name||'').replace('CAMISETA OVERSIZED ','').replace(/"/g,'')}</span>
+        <a href="producto.html?id=${key}" class="font-label-caps text-[9px] md:text-label-caps text-on-primary bg-primary px-2 md:px-4 py-1.5 md:py-2 hover:bg-surface hover:text-primary border border-primary transition-colors whitespace-nowrap text-center">VER</a>
+      </div>`;
+    return card;
+  }
+
+  window.renderPage = function(DATA) {
     document.getElementById('footer-copy').textContent = DATA.footer || '© 2026 STOICO. PERMANENCIA SOBRE TENDENCIAS.';
     if (DATA.heroImg) document.getElementById('hero-img').src = DATA.heroImg;
     const grid = document.getElementById('editorial-grid');
     grid.innerHTML = '';
-    Object.entries(DATA.products).forEach(([key, p]) => {
-      const card = document.createElement('div');
-      card.className = 'group cursor-pointer border border-primary bg-surface-container-low flex flex-col';
-      card.innerHTML = `
-        <a href="producto.html?id=${key}" class="block h-[42vw] sm:h-[45vh] md:h-[55vh] w-full relative overflow-hidden">
-          <img src="${p.img}" alt="${p.name}" class="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"/>
-        </a>
-        <div class="p-2 md:p-gutter-md bg-surface border-t border-primary flex flex-col sm:flex-row justify-between sm:items-center gap-2">
-          <span class="font-label-caps text-[10px] md:text-xs text-primary tracking-tighter uppercase leading-tight">${p.name.replace('CAMISETA OVERSIZED ','').replace(/"/g,'')}</span>
-          <a href="producto.html?id=${key}" class="font-label-caps text-[9px] md:text-label-caps text-on-primary bg-primary px-2 md:px-4 py-1.5 md:py-2 hover:bg-surface hover:text-primary border border-primary transition-colors whitespace-nowrap text-center">VER</a>
-        </div>`;
+    Object.entries(DATA.products).forEach(([key, p], i) => {
+      const card = buildCard(key, p);
+      // Animación escalonada al aparecer
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      card.style.transition = `opacity .55s ease ${i * 0.07}s, transform .55s ease ${i * 0.07}s`;
       grid.appendChild(card);
+      // Trigger en next frame para que la transición funcione
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }));
     });
-  }
+  };
 
-  // Render immediately from localStorage cache
   renderPage(stoicoGetData());
 </script>
-<!-- Firebase sync (background, no bloquea el render) -->
+<!-- Firebase sync -->
 <script type="module">
   import { fsGetAllData } from './firebase-app.js';
   try {
@@ -161,24 +174,7 @@
     if (fbData && Object.keys(fbData.products||{}).length > 0) {
       const merged = { ...stoicoGetData(), ...fbData };
       stoicoSaveData(merged);
-      // Re-render with fresh data
-      document.getElementById('footer-copy').textContent = merged.footer || '© 2026 STOICO. PERMANENCIA SOBRE TENDENCIAS.';
-      if (merged.heroImg) document.getElementById('hero-img').src = merged.heroImg;
-      const grid = document.getElementById('editorial-grid');
-      grid.innerHTML = '';
-      Object.entries(merged.products).forEach(([key, p]) => {
-        const card = document.createElement('div');
-        card.className = 'group cursor-pointer border border-primary bg-surface-container-low flex flex-col';
-        card.innerHTML = `
-          <div class="h-[60vh] w-full relative overflow-hidden">
-            <img src="${p.img}" alt="${p.name}" class="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"/>
-          </div>
-          <div class="p-gutter-md bg-surface border-t border-primary flex justify-between items-center">
-            <span class="font-headline-md text-primary tracking-tighter uppercase text-base">${p.name.replace('CAMISETA OVERSIZED ','').replace(/"/g,'')}</span>
-            <a href="producto.html?id=${key}" class="font-label-caps text-label-caps text-on-primary bg-primary px-4 py-2 hover:bg-surface hover:text-primary border border-primary transition-colors whitespace-nowrap text-xs">VER PRODUCTO</a>
-          </div>`;
-        grid.appendChild(card);
-      });
+      window.renderPage(merged); // usa la misma función responsiva
     }
   } catch(_) {}
 </script>

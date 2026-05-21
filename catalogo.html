@@ -136,27 +136,34 @@
   document.getElementById('menu-btn').addEventListener('click',  () => document.getElementById('mobile-menu').classList.toggle('hidden'));
   document.getElementById('filter-btn').addEventListener('click', () => document.getElementById('filters').classList.toggle('hidden'));
 
-  function renderGrid(DATA) {
+  window.renderGrid = function(DATA) {
     document.getElementById('footer-copy').textContent = DATA.footer || '© 2026 STOICO. PERMANENCIA SOBRE TENDENCIAS.';
     const grid = document.getElementById('product-grid');
     grid.innerHTML = '';
-    Object.entries(DATA.products).forEach(([key, p]) => {
+    Object.entries(DATA.products).forEach(([key, p], i) => {
       const card = document.createElement('div');
       card.className = 'group flex flex-col';
       card.innerHTML = `
         <a href="producto.html?id=${key}" class="block mb-2">
           <div class="relative w-full aspect-[4/5] bg-surface-container-low overflow-hidden">
-            <img src="${p.img}" alt="${p.name}" class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"/>
+            <img src="${p.img||''}" alt="${p.name||''}" class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"/>
           </div>
           <div class="mt-1 md:mt-base px-0.5">
-            <h2 class="text-xs md:text-body-md font-bold text-primary leading-tight">${p.name.replace('CAMISETA OVERSIZED ','').replace(/"/g,'')}</h2>
-            <span class="text-xs md:text-body-md text-secondary mt-0.5 block">${p.price}</span>
+            <h2 class="text-xs md:text-body-md font-bold text-primary leading-tight">${(p.name||'').replace('CAMISETA OVERSIZED ','').replace(/"/g,'')}</h2>
+            <span class="text-xs md:text-body-md text-secondary mt-0.5 block">${p.price||''}</span>
           </div>
         </a>
         <a href="producto.html?id=${key}" class="mt-auto border border-primary text-primary font-label-caps text-[10px] md:text-label-caps py-1.5 md:py-2 text-center hover:bg-primary hover:text-on-primary transition-colors">VER</a>`;
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(16px)';
+      card.style.transition = `opacity .5s ease ${i * 0.06}s, transform .5s ease ${i * 0.06}s`;
       grid.appendChild(card);
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }));
     });
-  }
+  };
   renderGrid(stoicoGetData());
 </script>
 <script type="module">
