@@ -162,11 +162,16 @@
   import { fsGetAllData } from './firebase-app.js';
   try {
     const fbData = await fsGetAllData();
-    if (fbData && Object.keys(fbData.products||{}).length > 0) {
-      const merged = { ...stoicoGetData(), ...fbData };
-      stoicoSaveData(merged);
-      window.renderPage(merged); // usa la misma función responsiva
-    }
+    if (!fbData || !Object.keys(fbData.products||{}).length) return;
+    const local  = stoicoGetData();
+    const merged = { ...local, ...fbData };
+    // Solo re-renderizar si los datos cambiaron visualmente
+    const sig = p => Object.entries(p).map(([k,v]) => k+(v.img||'').slice(0,40)+(v.name||'')+(v.price||'')).join();
+    const changed = sig(local.products||{}) !== sig(merged.products||{})
+                 || local.heroImg !== merged.heroImg
+                 || local.footer  !== merged.footer;
+    stoicoSaveData(merged);
+    if (changed) window.renderPage(merged);
   } catch(_) {}
 </script>
 </body>

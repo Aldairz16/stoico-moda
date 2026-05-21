@@ -163,11 +163,13 @@
   import { fsGetAllData } from './firebase-app.js';
   try {
     const fbData = await fsGetAllData();
-    if (fbData && Object.keys(fbData.products||{}).length > 0) {
-      const merged = { ...stoicoGetData(), ...fbData };
-      stoicoSaveData(merged);
-      renderGrid(merged);
-    }
+    if (!fbData || !Object.keys(fbData.products||{}).length) return;
+    const local  = stoicoGetData();
+    const merged = { ...local, ...fbData };
+    const sig = p => Object.entries(p).map(([k,v]) => k+(v.img||'').slice(0,40)+(v.name||'')+(v.price||'')).join();
+    const changed = sig(local.products||{}) !== sig(merged.products||{}) || local.footer !== merged.footer;
+    stoicoSaveData(merged);
+    if (changed) window.renderGrid(merged);
   } catch(_) {}
 </script>
 </body>
