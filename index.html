@@ -151,16 +151,7 @@
     grid.innerHTML = '';
     Object.entries(DATA.products).forEach(([key, p], i) => {
       const card = buildCard(key, p);
-      // Animación escalonada al aparecer
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(20px)';
-      card.style.transition = `opacity .55s ease ${i * 0.07}s, transform .55s ease ${i * 0.07}s`;
       grid.appendChild(card);
-      // Trigger en next frame para que la transición funcione
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        card.style.opacity = '1';
-        card.style.transform = 'translateY(0)';
-      }));
     });
   };
 

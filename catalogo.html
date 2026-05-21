@@ -154,14 +154,7 @@
           </div>
         </a>
         <a href="producto.html?id=${key}" class="mt-auto border border-primary text-primary font-label-caps text-[10px] md:text-label-caps py-1.5 md:py-2 text-center hover:bg-primary hover:text-on-primary transition-colors">VER</a>`;
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(16px)';
-      card.style.transition = `opacity .5s ease ${i * 0.06}s, transform .5s ease ${i * 0.06}s`;
       grid.appendChild(card);
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        card.style.opacity = '1';
-        card.style.transform = 'translateY(0)';
-      }));
     });
   };
   renderGrid(stoicoGetData());
